@@ -45,4 +45,4 @@ xsh::iter () {
   done
 }
 
-xsh::iter source base lib
+xsh::iter source base lib put
