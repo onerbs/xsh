@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Copyright (c) 2021 Alejandro Elí. All rights reserved.
+# This file is subject to the terms and conditions defined in
+# the LICENSE file, which is part of this source code package.
+
+command -v v &> /dev/null || {
+  echo "Error: The \`v\` executable was not found."
+  echo "Are you sure you've properly installed V?"
+  echo "https://github.com/vlang/v#installing-v-from-source"
+  echo
+  return 1
+}
+
+case $1 in
+  clean )
+    rm -rf $XSH_HOME/bin
+    shift
+    ;;
+esac
+
+if [[ ! -d $XSH_HOME/bin ]]; then
+  mkdir $XSH_HOME/bin
+fi
+
+xsh::compile () {
+  local Cmd Flag
+  local Source=$XSH_HOME/cmd
+  local Output=$XSH_HOME/bin
+  local Errors=$XSH_HOME/$(date '+%y%m%d').log
+
+  case $1 in
+    -prod )
+      Flag=$1
+      shift
+      ;;
+  esac
+
+  for Cmd in $@; do
+    if [[ -x $Output/$Cmd ]]; then
+      # Avoid wasting resources, skip re-compiling.
+      echo "Skip re-compiling $Cmd.v"
+      continue
+    fi
+    v $Flag $Source/$Cmd.v -o $Output/$Cmd 2> $Errors || {
+      echo "Error: failed to compile $Cmd.v"
+      echo
+      echo "  Please, open an issue and share the logs"
+      echo "  log file: $Errors"
+      echo
+      echo "  https://github.com/onerbs/xsh/issues/new"
+      echo
+      return 1
+    }
+  done
+}
+
+xsh::symlink () {
+  local Target Name Alias
+  local Output=$XSH_HOME/bin
+
+  cd $Output
+
+  for Target in $@; do
+    Name=$(cut -d: -f1 <<< $Target)
+    Target=$(cut -d: -f2 <<< $Target)
+    for Alias in $(tr , \  <<< $Target); do
+      ln -s $Name $Alias
+    done
+  done
+
+  cd - &> /dev/null
+}
+
+xsh::compile $1 state xsh_{doc,scan} abs nth table || return
+xsh::symlink nth:fst,lst
+
+unset -f xsh::compile xsh::symlink
