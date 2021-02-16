@@ -1,0 +1,10 @@
+.idea
+.vscode
+*.sublime-project
+*.*-workspace
+*.log
+_*
+
+bin
+not
+state
