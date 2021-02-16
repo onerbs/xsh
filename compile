@@ -24,8 +24,8 @@ if [[ ! -d $XSH_HOME/bin ]]; then
 fi
 
 xsh::compile () {
-  local Cmd Flag
-  local Source=$XSH_HOME/cmd
+  local Tool Flag
+  local Source=$XSH_HOME/src
   local Output=$XSH_HOME/bin
   local Errors=$XSH_HOME/$(date '+%y%m%d').log
 
@@ -36,14 +36,13 @@ xsh::compile () {
       ;;
   esac
 
-  for Cmd in $@; do
-    if [[ -x $Output/$Cmd ]]; then
+  for Tool in $@; do
+    if [[ -x $Output/$Tool ]]; then
       # Avoid wasting resources, skip re-compiling.
-      echo "Skip re-compiling $Cmd.v"
       continue
     fi
-    v $Flag $Source/$Cmd.v -o $Output/$Cmd 2> $Errors || {
-      echo "Error: failed to compile $Cmd.v"
+    v $Flag $Source/$Tool.v -o $Output/$Tool 2> $Errors || {
+      echo "Error: failed to compile $Tool.v"
       echo
       echo "  Please, open an issue and share the logs"
       echo "  log file: $Errors"
