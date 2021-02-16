@@ -83,7 +83,6 @@ xsh::symlink () {
   cd - &> /dev/null
 }
 
-xsh::compile $1 xsh_{watch,doc,scan} abs nth table || return
-xsh::symlink nth:fst,lst
+xsh::compile $1 xsh_{watch,doc,scan} abs || return
 
 unset -f xsh::compile xsh::symlink
