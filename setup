@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Copyright (c) 2021 Alejandro Elí. All rights reserved.
+# This file is subject to the terms and conditions defined in
+# the LICENSE file, which is part of this source code package.
+
+if [[ $0 == $BASH_SOURCE ]]; then
+  echo "Do not run this file, source it instead." >&2
+  exit 1
+fi
+
+#! The root directory of XSH
+export XSH_HOME=$(dirname $BASH_SOURCE)
+
+if [[ ! $(ls -1 $XSH_HOME/bin 2> /dev/null) ]]; then
+  # Delete bin folder if empty
+  rm -r $XSH_HOME/bin &> /dev/null
+fi
+
+if [[ ! -d $XSH_HOME/bin ]]; then
+  source $XSH_HOME/compile || {
+    echo "Error: failed to compile the tools."
+    echo
+    cat $XSH_HOME/*.log
+    return 1
+  }
+fi
+
+#! Modify the PATH variable for the active shell,
+#! so the tools are available during the session.
+export PATH+=:$XSH_HOME/bin
+
+xsh::iter () {
+  #! Execute ACTION over ACTORS
+  #+ ACTION ACTORS
+  local Watching=$(state)
+  local Action=$1 Actor Dir
+  while (( $# > 1 )); do shift
+    for Dir in $Watching; do
+      Actor=$Dir/$1.sh
+      if [[ -f $Actor ]]; then
+        $Action $Actor
+      fi
+    done
+  done
+}
+
+xsh::iter source base lib
