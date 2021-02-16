@@ -4,6 +4,15 @@
 # This file is subject to the terms and conditions defined in
 # the LICENSE file, which is part of this source code package.
 
+if [[ $0 == $BASH_SOURCE ]]; then
+  echo "Do not run this file, source it instead." >&2
+  exit 1
+fi
+
+if [[ ! $XSH_HOME ]]; then
+  export XSH_HOME=$(dirname $BASH_SOURCE)
+fi
+
 command -v v &> /dev/null || {
   echo "Error: The \`v\` executable was not found."
   echo "Are you sure you've properly installed V?"
