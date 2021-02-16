@@ -23,7 +23,8 @@ command -v v &> /dev/null || {
 
 case $1 in
   clean )
-    rm -rf $XSH_HOME/bin
+    rm -rf $XSH_HOME/bin &> /dev/null
+    rm $XSH_HOME/*.log &> /dev/null
     shift
     ;;
 esac
