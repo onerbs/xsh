@@ -33,7 +33,7 @@ export PATH+=:$XSH_HOME/bin
 xsh::iter () {
   #! Execute ACTION over ACTORS
   #+ ACTION ACTORS
-  local Watching=$(state)
+  local Watching=$(xsh_watch)
   local Action=$1 Actor Dir
   while (( $# > 1 )); do shift
     for Dir in $Watching; do

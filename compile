@@ -72,7 +72,7 @@ xsh::symlink () {
   cd - &> /dev/null
 }
 
-xsh::compile $1 state xsh_{doc,scan} abs nth table || return
+xsh::compile $1 xsh_{watch,doc,scan} abs nth table || return
 xsh::symlink nth:fst,lst
 
 unset -f xsh::compile xsh::symlink
