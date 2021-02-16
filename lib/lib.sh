@@ -10,7 +10,7 @@ lib () {
 
 -l ) # List the available libs
   for Dir in $(xsh_watch); do
-    xsh_scan list $Dir
+    xsh_scan list -m $Dir
   done
   return
   ;;
