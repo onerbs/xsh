@@ -30,19 +30,25 @@ fn cmd_list(mut args []string) {
 
 	book := doc.book(args[0])
 
+	mut result := []string{}
+
 	if recursive {
 		if minimal {
-			println(book.books.map(doc.get_base_name).join('\n'))
-			println(book.sheets.map(doc.get_base_name).join('\n'))
+			result << book.books.map(doc.get_base_name)
+			result << book.sheets.map(doc.get_base_name)
 		} else {
-			println('recursive')
+			// println('recursive')
 		}
 	} else {
 		if minimal {
-			println(book.sheets.map(doc.get_base_name).join('\n'))
+			result << book.sheets.map(doc.get_base_name)
 		} else {
-			println('complete')
+			// println('complete')
 		}
+	}
+
+	if result.len > 0 {
+		println(result.join('\n'))
 	}
 }
 
