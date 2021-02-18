@@ -35,6 +35,8 @@ lib () {
   return
   ;;
 
+'' ) return ;;
+
   esac
   for Lib in $@; do
     xsh::iter ${Action:-source} $Lib
