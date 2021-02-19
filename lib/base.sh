@@ -51,6 +51,6 @@ not () {
   #+ VARIABLE
   #: variable && declare variable=value
   isw $1 && return 2
-  quiet declare -p $1 || return
-  isw $(declare -p $1 | cut -d\" -f2)
+  quiet declare -p $1 || return 0
+  isw $(declare -p $1 2> /dev/null | cut -d\" -f2)
 }
