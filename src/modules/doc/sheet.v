@@ -4,7 +4,7 @@
 
 module doc
 
-import os
+import xsh
 import term
 
 struct Sheet {
@@ -14,8 +14,7 @@ pub:
 }
 
 pub fn sheet(origin string) Sheet {
-	name := os.base(origin).split('.')[0]
-	// println('name: $name')
+	name := get_base_name(origin)
 	return Sheet{origin, name}
 }
 
@@ -28,7 +27,8 @@ pub fn (s Sheet) get_entes() []Ente {
 	mut entes := []Ente{}
 	mut current := &Ente{}
 	mut ongoing := false
-	for line in get_lines(s.origin) {
+	lines := xsh.clean_lines(s.origin)
+	for line in lines {
 		if ' () {' in line {
 			current = ente(line.split(' ')[0])
 			ongoing = true
@@ -111,15 +111,4 @@ fn get_idxs(line string) []int {
 		index++
 	}
 	return idxs
-}
-
-fn get_lines(file string) []string {
-	lines := os.read_lines(file) or { []string{cap: 0} }
-	mut valid := []string{cap: lines.len}
-	for line in lines.map(it.trim_space()) {
-		if line.len > 0 && !line.starts_with('# ') {
-			valid << line
-		}
-	}
-	return valid
 }
