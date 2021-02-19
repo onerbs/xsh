@@ -9,9 +9,7 @@ lib () {
   case $1 in
 
 -l ) # List the available libs
-  for Dir in $(xsh_watch); do
-    xsh_scan list -m $Dir
-  done
+  xsh_scan list -m
   return
   ;;
 
