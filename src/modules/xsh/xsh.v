@@ -35,15 +35,8 @@ pub fn need_env(name string) ?string {
 	return value
 }
 
-pub fn read_lines(file string) ?[]string {
-	lines := os.read_lines(file) or {
-		return error('unable to read "$file"')
-	}
-	return lines
-}
-
-pub fn clean_lines(file string) ?[]string {
-	lines := read_lines(file) ?
+pub fn clean_lines(file string) []string {
+	lines := os.read_lines(file) or { return []string{} }
 	return clean(lines)
 }
 
