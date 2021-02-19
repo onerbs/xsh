@@ -47,10 +47,11 @@ pub fn clean_lines(file string) ?[]string {
 	return clean(lines)
 }
 
+// clean remove blank lines and comments
 fn clean(lines []string) []string {
 	mut arr := []string{cap: lines.len}
 	for line in lines.map(it.trim_space()) {
-		if line.len > 0 {
+		if line.len > 0 && !line.starts_with('# ') {
 			arr << line
 		}
 	}
