@@ -37,9 +37,8 @@ lib () {
 '' ) return ;;
 
   esac
-  for Lib in $@; do
-    xsh::iter ${Action:-source} $Lib
-  done
+
+  xsh::iter ${Action:-source} $@
 }
 
 need () {
