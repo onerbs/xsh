@@ -21,7 +21,6 @@ if [[ ! -d $XSH_HOME/bin ]]; then
   source $XSH_HOME/compile || {
     echo "Error: failed to compile the tools."
     echo
-    cat $XSH_HOME/*.log
     return 1
   }
 fi
