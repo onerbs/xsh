@@ -36,11 +36,30 @@ xsh::iter () {
   local Action=$1 Actor Dir
   while (( $# > 1 )); do shift
     for Dir in $Watching; do
-      Actor=$Dir/$1.sh
+      Actor=$Dir/$1
+      if [[ -d $Actor ]]; then
+        xsh::iter $Action $(xsh::inner $Actor)
+        break
+      fi
+      Actor=$Actor.sh
       if [[ -f $Actor ]]; then
         $Action $Actor
+        break
       fi
     done
+  done
+}
+
+xsh::inner () {
+  local Name Dir=$(basename $1)
+  if [[ -f $1/$Dir.sh ]]; then
+    echo $Dir/$Dir
+  fi
+  for Name in $(ls $1); do
+    case $Name in
+      $Dir.sh ) ;;
+      * ) echo $Dir/${Name%.*} ;;
+    esac
   done
 }
 
