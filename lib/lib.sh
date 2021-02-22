@@ -15,6 +15,7 @@ lib () {
 
 -e ) # Edit LIB using $VISUAL or $EDITOR
   Action=${VISUAL:-$EDITOR};
+  shift
   ;;
 
 -E ) # EDITOR: Edit LIB using EDITOR
