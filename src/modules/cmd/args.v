@@ -14,3 +14,19 @@ pub fn parse_flag(mut args []string, flags []string) bool {
 	}
 	return status
 }
+
+pub fn parse_flag_value(mut args []string, flags []string, fb string) string {
+	mut value := fb
+	for f in flags {
+		if f in args {
+			index := args.index(f)
+			indey := index + 1
+			if indey < args.len {
+				value = args[indey]
+				args.delete(indey)
+			}
+			args.delete(index)
+		}
+	}
+	return value
+}
