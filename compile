@@ -66,23 +66,6 @@ xsh::compile () {
   done
 }
 
-xsh::symlink () {
-  local Target Name Alias
-  local Output=$XSH_HOME/bin
-
-  cd $Output
-
-  for Target in $@; do
-    Name=$(cut -d: -f1 <<< $Target)
-    Target=$(cut -d: -f2 <<< $Target)
-    for Alias in $(tr , \  <<< $Target); do
-      ln -s $Name $Alias
-    done
-  done
-
-  cd - &> /dev/null
-}
-
 xsh::compile $1 xsh_{watch,doc,scan} abs || return
 
-unset -f xsh::compile xsh::symlink
+unset -f xsh::compile
