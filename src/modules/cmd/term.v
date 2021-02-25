@@ -6,12 +6,14 @@ module cmd
 
 import term
 
+// set_title prints the provided text in bold
+// preceded by a new line and two spaces.
 pub fn set_title(title string) {
 	println('\n  ${term.bold(title)}')
 }
 
-// fixed append spaces to the end of item so the length
-// match the specified metric.
+// fixed add spaces at the end of the item
+// so that the length matches the specified metric.
 pub fn fixed(item string, metro int) string {
 	return item + ' '.repeat(metro - item.len)
 }
