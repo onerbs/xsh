@@ -12,7 +12,7 @@ pub fn get_shelve() ?[]Book {
 }
 
 pub fn (shelve []Book) find_sheets(name string) []Sheet {
-	return shelve.get_sheet_list().filter(get_file_name(it) == '${name}.sh').map(sheet)
+	return shelve.get_sheet_list().filter(simple_path(it) == name).map(sheet)
 }
 
 fn (shelve []Book) get_sheet_list() []string {

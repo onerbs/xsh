@@ -14,7 +14,7 @@ pub:
 }
 
 pub fn sheet(origin string) Sheet {
-	name := get_base_name(origin)
+	name := simple_path(origin)
 	return Sheet{origin, name}
 }
 
