@@ -6,20 +6,16 @@ module doc
 
 import os
 
-pub fn get_file_name(path string) string {
-	items := path.split(os.path_separator)
-	return '${items.last()}'
+// simple return the file name without extension.
+pub fn simple(file string) string {
+	if !('.' in file) {
+		return file
+	}
+	parts := file.split('.')
+	return parts[0..parts.len - 1].join('.')
 }
 
-pub fn get_base_name(path string) string {
-	is_dir := os.is_dir(path)
-	items := path.split(os.path_separator)
-	name := '${items.last()}'
-
-	if is_dir {
-		return '$name/'
-	} else {
-		parts := name.split('.')
-		return parts[0..parts.len - 1].join('.')
-	}
+// simple_path return the basename of the provided path without extension.
+pub	fn simple_path(path string) string {
+	return simple(os.base(path))
 }
