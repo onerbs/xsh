@@ -9,11 +9,16 @@ import cmd
 import os
 
 // Usage: table [<options>] <input>
-// Usage: some_command | table [<options>] -
 
 // Options:
 //   -r <delimiter>    Define the row delimiter
 //   -c <delimiter>    Define the cell delimiter
+//   -                 Read <input> from the standard input
+
+// Examples:
+//   table -r _ a:b:c_:d:e
+//   table -r : -c / - <<< $PATH
+//   cat /etc/passwd | table -
 
 fn main() {
 	mut args := xsh.need_args(1) or { exit(fatal(err)) }
