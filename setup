@@ -39,12 +39,12 @@ xsh::iter () {
       Actor=$Dir/$1
       if [[ -d $Actor ]]; then
         xsh::iter $Action $(xsh::inner $Actor)
-        break
+        continue
       fi
       Actor=$Actor.sh
       if [[ -f $Actor ]]; then
         $Action $Actor
-        break
+        continue
       fi
     done
   done
