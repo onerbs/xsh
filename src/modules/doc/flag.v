@@ -4,7 +4,7 @@
 
 module doc
 
-import cmd
+import plu
 
 struct Flag {
 	key    string
@@ -49,5 +49,5 @@ fn get_item(s string, x string) (string, string) {
 
 fn (this Flag) str() string {
 	// key := if __key__ in [token_any, token_nil] { term.italic(__key__) } else { __key__ }
-	return cmd.fixed(this.key, this.metro) + this.val
+	return plu.fixed_len(this.key, this.metro) + this.val
 }

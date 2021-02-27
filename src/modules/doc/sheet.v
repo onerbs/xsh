@@ -4,7 +4,7 @@
 
 module doc
 
-import xsh
+import os
 import term
 
 struct Sheet {
@@ -27,7 +27,7 @@ pub fn (s Sheet) get_entes() []Ente {
 	mut entes := []Ente{}
 	mut current := &Ente{}
 	mut ongoing := false
-	lines := xsh.clean_lines(s.origin)
+	lines := clean_file(s.origin)
 	for line in lines {
 		if ' () {' in line {
 			current = ente(line.split(' ')[0])
@@ -111,4 +111,10 @@ fn get_idxs(line string) []int {
 		index++
 	}
 	return idxs
+}
+
+// clean_file clean the lines of the specified file
+pub fn clean_file(file string) []string {
+	lines := os.read_lines(file) or { return []string{} }
+	return lines.map(it.trim_space()).filter(it.len > 0)
 }

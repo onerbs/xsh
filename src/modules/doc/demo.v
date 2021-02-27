@@ -4,7 +4,7 @@
 
 module doc
 
-import cmd
+import plu
 
 struct Demo {
 	key string
@@ -45,5 +45,5 @@ fn (d Demo) str() string {
 	if d.val.len == 0 {
 		return d.key
 	}
-	return cmd.fixed(d.key, d.metro) + '# Prints: $d.val'
+	return plu.fixed_len(d.key, d.metro) + '# Prints: $d.val'
 }

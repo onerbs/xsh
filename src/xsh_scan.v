@@ -4,26 +4,25 @@
 
 module main
 
-import xsh
-import cmd
 import doc
+import plu { fail }
 
 // Usage: xsh_scan list [-m]
 
 fn main() {
-	mut args := xsh.need_args(1) or { exit(fatal(err)) }
+	mut args := plu.need_args(1) or { exit(fail(err)) }
 	cmd_name := args[0]
 	match cmd_name {
 		'list' { cmd_list(mut args[1..]) }
-		else { exit(fatal('unknown command: "${cmd_name}"')) }
+		else { exit(fail('unknown command: "${cmd_name}"')) }
 	}
 }
 
 // cmd_list will print a list of all known libs
 fn cmd_list(mut args []string) {
-	minimal := cmd.parse_flag(mut args, ['-m'])
+	minimal := plu.parse_flag(mut args, ['-m'])
 
-	shelve := doc.get_shelve() or { exit(fatal(err)) }
+	shelve := doc.get_shelve() or { exit(fail(err)) }
 	mut result := []string{}
 
 	for book in shelve {
@@ -31,15 +30,11 @@ fn cmd_list(mut args []string) {
 			result << book.books.map(doc.simple_path)
 			result << book.sheets.map(doc.simple_path)
 		} else {
-			cmd.set_title(book.origin)
+			plu.set_title(book.origin)
 		}
 	}
 
 	if result.len > 0 {
 		println(result.join('\n'))
 	}
-}
-
-fn fatal(err string) int {
-	return xsh.fail('xsh_scan: $err')
 }

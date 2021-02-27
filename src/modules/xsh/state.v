@@ -5,6 +5,7 @@
 module xsh
 
 import os
+import plu
 
 struct State {
 	origin string
@@ -13,7 +14,7 @@ mut:
 }
 
 pub fn get_state() ?State {
-	xsh_home := need_env('XSH_HOME') ?
+	xsh_home := plu.need_env('XSH_HOME') ?
 	origin := os.join_path(xsh_home, 'state')
 	raw := os.read_file(origin) or {
 		create_state(xsh_home, origin)

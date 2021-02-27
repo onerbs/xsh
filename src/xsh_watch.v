@@ -5,16 +5,16 @@
 module main
 
 import xsh
-import cmd
+import plu { fail }
 
 // Usage: xsh_watch [-d|--del] [<path>] [-q|--quiet]
 
 fn main() {
-	mut state := xsh.get_state() or { exit(fatal(err)) }
+	mut state := xsh.get_state() or { exit(fail(err)) }
 	mut path := state.get_path()
-	mut args := xsh.get_args()
+	mut args := plu.get_args()
 
-	quiet := cmd.parse_flag(mut args, ['-q', '--quiet'])
+	quiet := plu.parse_flag(mut args, ['-q', '--quiet'])
 	to_add, to_del := extract(args)
 
 	if to_add.len > 0 {
@@ -48,15 +48,11 @@ fn extract(raw []string) ([]string, []string) {
 			continue
 		}
 		if adding {
-			to_add << cmd.real_path(it)
+			to_add << plu.real_path(it)
 		}
 		if deling {
-			to_del << cmd.real_path(it)
+			to_del << plu.real_path(it)
 		}
 	}
 	return to_add, to_del
-}
-
-fn fatal(err string) int {
-	return xsh.fail('xsh_watch: $err')
 }
