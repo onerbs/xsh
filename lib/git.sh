@@ -22,24 +22,15 @@ gl () {
   #! Log utility
   #+ [OPTION] NUMBER
   case $1 in
--s ) # Short log: Print NUMBER entries
-  git shortlog -${2:-5}
-  ;;
--l ) # Print NUMBER entries
-  git log --oneline -${2:-5}
-  ;;
--s* ) # NUMBER: Short log: Print NUMBER entries
-  git shortlog -${1:2}
-  ;;
--l* ) # NUMBER: Print NUMBER entries one line each
-  git log --oneline -${1:2}
-  ;;
--* ) # NUMBER: Print NUMBER entries one line each
-  git log --oneline $1
-  ;;
-* ) # NUMBER: Print NUMBER entries
-  git log -n ${1:-5}
-  ;;
+    -l ) # Print NUMBER entries (oneline)
+      git log --oneline -${2:-5}
+      ;;
+    -s ) # Print NUMBER entries (shortlog)
+      git shortlog -${2:-5}
+      ;;
+    * ) # NUMBER: Print NUMBER entries
+      git log -${1:-5}
+      ;;
   esac
 }
 
@@ -57,8 +48,9 @@ alias gt='git fetch'
 alias gw='git switch'
 
 gu () {
-  #! Undo N commits (REF is HEAD by default)
-  #+ TIMES [REF]
-  #: gu 3 master
+  #! Undo NUMBER commits
+  #+ NUMBER [REF]
+  #- REF is HEAD by default
+  #: 3 dev
   git reset ${2:-HEAD}~$1
 }
