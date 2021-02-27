@@ -25,14 +25,14 @@ fn flag(line string) Flag {
 	if ': ' in val {
 		arg, val = get_item(val, ': ')
 	}
-	key = if key.ends_with('*') {
-		if arg == '' { doc.token_any } else { key.replace('*', arg) }
+	key = if key == '*' {
+		if arg == '' { doc.token_any } else { arg }
 	} else if key == "''" {
 		doc.token_nil
-	} else if arg == '' {
-		key
-	} else {
+	} else if arg != '' {
 		'$key $arg'
+	} else {
+		key
 	}
 	return Flag{
 		key: key
