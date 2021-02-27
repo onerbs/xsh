@@ -18,11 +18,7 @@ if [[ ! $(ls -1 $XSH_HOME/bin 2> /dev/null) ]]; then
 fi
 
 if [[ ! -d $XSH_HOME/bin ]]; then
-  source $XSH_HOME/compile || {
-    echo "Error: failed to compile the tools."
-    echo
-    return 1
-  }
+  source $XSH_HOME/compile || return
 fi
 
 #! Modify the PATH variable for the active shell,
