@@ -66,6 +66,6 @@ xsh::compile () {
   done
 }
 
-xsh::compile $1 xsh_{watch,doc,scan} abs table md5 || return
+xsh::compile $1 xsh_{watch,doc,scan} || return
 
 unset -f xsh::compile
