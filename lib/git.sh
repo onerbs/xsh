@@ -28,22 +28,6 @@ gm () {
   gc -m "$Message"
 }
 
-gl () {
-  #! Log utility
-  #+ [OPTION] NUMBER
-  case $1 in
-    -l ) # Print NUMBER entries (oneline)
-      git log --oneline -${2:-5}
-      ;;
-    -s ) # Print NUMBER entries (shortlog)
-      git shortlog -${2:-5}
-      ;;
-    * ) # NUMBER: Print NUMBER entries
-      git log -${1:-5}
-      ;;
-  esac
-}
-
 gu () {
   #! Undo NUMBER commits
   #+ NUMBER [REF]
