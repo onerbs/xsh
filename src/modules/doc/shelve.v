@@ -16,7 +16,7 @@ pub fn (shelve []Book) find_sheets(name string) []Sheet {
 }
 
 fn (shelve []Book) get_sheet_list() []string {
-	return flat<string>(shelve.map(it.sheets))
+	return flat(shelve.map(it.sheets))
 }
 
 // Someday, this will be easier...

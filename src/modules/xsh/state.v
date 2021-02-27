@@ -41,9 +41,9 @@ pub fn (s State) str() string {
 }
 
 fn create_state(xsh_home string, origin string) string {
-	def_state := os.join_path(xsh_home, 'lib')
-	record(origin, def_state)
-	return def_state
+	default := os.join_path(xsh_home, 'lib')
+	record(origin, default)
+	return default
 }
 
 fn record(file string, data string) {

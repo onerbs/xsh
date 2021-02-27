@@ -44,19 +44,15 @@ fn main() {
 fn extract(raw []string) ([]string, []string) {
 	mut to_add := []string{}
 	mut to_del := []string{}
-	mut adding := true
-	mut deling := false
-
+	mut status := true
 	for it in raw {
 		if it in ['-d', '--del'] {
-			adding = false
-			deling = true
+			status = false
 			continue
 		}
-		if adding {
+		if status {
 			to_add << plu.real_path(it)
-		}
-		if deling {
+		} else {
 			to_del << plu.real_path(it)
 		}
 	}

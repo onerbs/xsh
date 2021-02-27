@@ -20,7 +20,6 @@ const (
 )
 
 fn flag(line string) Flag {
-	// todo: alternative notation (#~ ?)
 	mut arg := ''
 	mut key, mut val := get_item(line, ' ) # ')
 	if ': ' in val {
@@ -42,7 +41,6 @@ fn flag(line string) Flag {
 	}
 }
 
-// this function does not ensure x in s
 fn get_item(s string, x string) (string, string) {
 	tmp := s.split_nth(x, 2)
 	return tmp[0], tmp[1]

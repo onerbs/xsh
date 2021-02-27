@@ -18,7 +18,7 @@ pub fn book(root string) Book {
 	mut books := []string{}
 	mut sheets := []string{}
 	for file in get_files(root) {
-		if os.is_dir('$file') {
+		if os.is_dir(file) {
 			books << file
 		} else {
 			sheets << file
