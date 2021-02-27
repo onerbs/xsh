@@ -45,14 +45,14 @@ fn (mut e Ente) str() string {
 	e.update_metro()
 	bright_name := term.yellow(e.name)
 	if e.internal {
-		return '\n  $bright_name (internal)\n\n'
+		return '  $bright_name (internal)\n\n'
 	}
 	mut result := '  $bright_name$e.headline'
 	result += '\n  Usage: $e.name $e.usage'
 	result += section('Options', e.flags)
 	result += section('Notes', e.notes)
 	result += section('Examples', e.demos)
-	return '\n${result}\n'
+	return '$result\n'
 }
 
 fn section<T>(title string, xs []T) string {
