@@ -22,8 +22,10 @@ alias gt='git fetch'
 alias gw='git switch'
 
 gm () {
-  #! Make a commit
+  #! Commit with a message
   #+ MESSAGE
+  #- The message does not require to be quoted
+  #: My first commit
   var Message="$*"
   gc -m "$Message"
 }
