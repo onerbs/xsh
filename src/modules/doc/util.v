@@ -16,6 +16,6 @@ pub fn simple(file string) string {
 }
 
 // simple_path return the basename of the provided path without extension.
-pub	fn simple_path(path string) string {
+pub fn simple_path(path string) string {
 	return simple(os.base(path))
 }

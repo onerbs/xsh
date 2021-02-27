@@ -8,7 +8,7 @@ import xsh
 
 pub fn get_shelve() ?[]Book {
 	state := xsh.get_state() ?
-	return state.get_path().map(doc.book)
+	return state.get_path().map(book)
 }
 
 pub fn (shelve []Book) find_sheets(name string) []Sheet {

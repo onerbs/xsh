@@ -14,7 +14,7 @@ fn main() {
 	cmd_name := args[0]
 	match cmd_name {
 		'list' { cmd_list(mut args[1..]) }
-		else { exit(fail('unknown command: "${cmd_name}"')) }
+		else { exit(fail('unknown command: "$cmd_name"')) }
 	}
 }
 

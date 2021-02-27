@@ -8,7 +8,7 @@ import plu
 import term
 
 struct Flag {
-	key    string
+	key string
 	val string
 mut:
 	metro int
@@ -27,9 +27,9 @@ fn flag(line string) Flag {
 		arg, val = get_item(val, ': ')
 	}
 	key = if key.ends_with('*') {
-		if arg == '' { token_any } else { key.replace('*', arg) }
+		if arg == '' { doc.token_any } else { key.replace('*', arg) }
 	} else if key == "''" {
-		token_nil
+		doc.token_nil
 	} else if arg == '' {
 		key
 	} else {
@@ -50,7 +50,7 @@ fn get_item(s string, x string) (string, string) {
 
 fn (f Flag) str() string {
 	mut key := plu.fixed_len(f.key, f.metro)
-	if f.key in [token_any, token_nil] {
+	if f.key in [doc.token_any, doc.token_nil] {
 		key = term.italic(key)
 	}
 	return key + f.val

@@ -49,21 +49,17 @@ pub fn (s Sheet) get_entes() []Ente {
 			}
 		} else if line.starts_with('#-') {
 			if ongoing {
-				current.notes << if line.len > 2 {
-					format(line[3..])
-				} else {
-					''
-				}
+				current.notes << if line.len > 2 { format(line[3..]) } else { '' }
 			}
 		} else if line.starts_with('#: ') {
 			if ongoing {
 				current.demos << demo(current.name, line[3..])
 			}
-			// todo: References (aka @see ...)
-			// } else if line.starts_with('#; ') {
-			// if ongoing {
-			// current.refs << ref(line[3..])
-			// }
+		// } else if line.starts_with('#; ') {
+		// 	todo: References (aka @see ...)
+		// 	if ongoing {
+		// 		current.refs << ref(line[3..])
+		// 	}
 		} else if ' ) # ' in line {
 			if ongoing {
 				current.flags << flag(line)

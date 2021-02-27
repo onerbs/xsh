@@ -10,7 +10,7 @@ import arrays
 struct Ente {
 	internal bool
 pub:
-	name     string
+	name string
 mut:
 	headline string
 	usage    string

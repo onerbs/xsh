@@ -16,9 +16,7 @@ mut:
 pub fn get_state() ?State {
 	xsh_home := plu.need_env('XSH_HOME') ?
 	origin := os.join_path(xsh_home, 'state')
-	raw := os.read_file(origin) or {
-		create_state(xsh_home, origin)
-	}
+	raw := os.read_file(origin) or { create_state(xsh_home, origin) }
 	path := raw.split(os.path_delimiter)
 	state := State{
 		origin: origin
@@ -49,7 +47,5 @@ fn create_state(xsh_home string, origin string) string {
 }
 
 fn record(file string, data string) {
-	os.write_file(file, data) or {
-		eprintln('unable to write file "$file"\n$err')
-	}
+	os.write_file(file, data) or { eprintln('unable to write file "$file"\n$err') }
 }
