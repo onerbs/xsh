@@ -85,6 +85,9 @@ xsh::compile () {
       return 1
     }
   done
+
+  # At this point, there's no errors.
+  rm $Errors &> /dev/null
 }
 
 xsh::get_plu || return
