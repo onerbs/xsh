@@ -6,10 +6,20 @@ need git || return
 
 alias ga='git add'
 alias gA='git restore --staged'
-
-alias gbr='git branch'
-
+alias gb='git branch'
 alias gc='git commit'
+alias gf='git config'
+alias gfg='gf --global'
+alias gk='git checkout'
+alias gll='git pull'
+alias gp='git push'
+alias gr='git remote'
+alias gre='git reset'
+alias grm='git rm'
+alias grv='gr -v'
+alias gs='git status'
+alias gt='git fetch'
+alias gw='git switch'
 
 gm () {
   #! Make a commit
@@ -33,19 +43,6 @@ gl () {
       ;;
   esac
 }
-
-alias gf='git config'
-alias gfg='gf --global'
-alias gp='git push'
-alias gll='git pull'
-alias gk='git checkout'
-alias gr='git remote'
-alias grv='gr -v'
-alias gre='git reset'
-alias grm='git rm'
-alias gs='git status'
-alias gt='git fetch'
-alias gw='git switch'
 
 gu () {
   #! Undo NUMBER commits
