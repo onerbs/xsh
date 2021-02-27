@@ -9,47 +9,6 @@ alias gA='git restore --staged'
 
 alias gbr='git branch'
 
-gb () {
-  #! Manage your branches
-  #+ [OPTION] BRANCH
-  case $1 in
-    -g ) # Merge A with B
-      # ${4:---no-ff} // gbr -f ?
-      git merge ${3:-$(gb -n)} $2
-      ;;
-    -U ) # Unset upstream
-      gbr --unset-upstream ${@:2}
-      ;;
-    -E ) # Edit description
-      gbr --edit-description ${@:2}
-      ;;
-    -t ) # Detach
-      gbr --detach ${@:2}
-      ;;
-    -n ) # Print the name of the current branch
-      gbr --show-current
-      ;;
-    -i ) # Contains
-      gbr --contains ${@:2}
-      ;;
-    -I ) # No contains
-      gbr --no-contains ${@:2}
-      ;;
-    -x ) # Merged
-      gbr --merged ${@:2}
-      ;;
-    -X ) # No merged
-      gbr --no-merged ${@:2}
-      ;;
-    -dR ) # Delete remote
-      gpo :${@:2}
-      ;;
-    * ) # d, D, m, M, c, C, u
-      gbr $@
-      ;;
-  esac
-}
-
 alias gc='git commit'
 
 gm () {
