@@ -5,6 +5,7 @@
 module doc
 
 import plu
+import term
 
 struct Flag {
 	key    string
@@ -47,7 +48,10 @@ fn get_item(s string, x string) (string, string) {
 	return tmp[0], tmp[1]
 }
 
-fn (this Flag) str() string {
-	// key := if __key__ in [token_any, token_nil] { term.italic(__key__) } else { __key__ }
-	return plu.fixed_len(this.key, this.metro) + this.val
+fn (f Flag) str() string {
+	mut key := plu.fixed_len(f.key, f.metro)
+	if f.key in [token_any, token_nil] {
+		key = term.italic(key)
+	}
+	return key + f.val
 }
