@@ -7,37 +7,29 @@ lib () {
   #+ [OPTIONS] LIB
   var Action Lib Dir
   case $1 in
-
--l ) # List the available libs
-  xsh_scan list -m
-  return
-  ;;
-
--e ) # Edit LIB using $VISUAL or $EDITOR
-  Action=${VISUAL:-$EDITOR};
-  shift
-  ;;
-
--E ) # EDITOR: Edit LIB using EDITOR
-  Action=$2
-  shift 2
-  ;;
-
--H ) # LIB [FUNC]: Print help of the specified target
-  #: -H base not
-  xsh_doc ${@:2};
-  return
-  ;;
-
--h ) # Print this help and exit
-  xsh_doc lib lib
-  return
-  ;;
-
-'' ) return ;;
-
+    '' ) return ;;
+    -l ) # List the available libs
+      xsh_scan list -m
+      return
+      ;;
+    -e ) # Edit LIB using $VISUAL or $EDITOR
+      Action=${VISUAL:-$EDITOR}
+      shift
+      ;;
+    -E ) # EDITOR: Edit LIB using EDITOR
+      Action=$2
+      shift 2
+      ;;
+    -H ) # LIB [FUNC]: Print help of the specified target
+      #: -H base not
+      xsh_doc ${@:2}
+      return
+      ;;
+    -h ) # Print this help and exit
+      xsh_doc lib lib
+      return
+      ;;
   esac
-
   xsh::iter ${Action:-source} $@
 }
 
