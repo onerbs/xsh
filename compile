@@ -35,6 +35,27 @@ if [[ ! -d $XSH_HOME/bin ]]; then
   mkdir $XSH_HOME/bin
 fi
 
+xsh::get_plu () {
+  local Modules=$VMODULES
+  case $Modules in
+    *:* ) Modules=${VMODULES%%:*} ;;
+     '' ) Modules=$HOME/.vmodules ;;
+  esac
+  local Target=$Modules/plu
+  local GitURL=https://github.com/onerbs/plu
+  if [[ ! -d $Target ]]; then
+    echo "Installing module \"plu\" from $GitURL to $Target ..."
+    git clone --depth 1 --quiet $GitURL $Target || {
+      echo "Error: failed to clone the \`plu\` repository"
+      echo
+      echo "  Please, make sure you have \`git\` installed"
+      echo "  and an active Internet connection"
+      echo
+      return 2
+    }
+  fi
+}
+
 xsh::compile () {
   local Tool Flag
   local Source=$XSH_HOME/src
@@ -66,6 +87,7 @@ xsh::compile () {
   done
 }
 
+xsh::get_plu || return
 xsh::compile $1 xsh_{watch,doc,scan} || return
 
-unset -f xsh::compile
+unset -f xsh::compile xsh::get_plu
