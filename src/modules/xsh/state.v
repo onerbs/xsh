@@ -47,5 +47,8 @@ fn create_state(xsh_home string, origin string) string {
 }
 
 fn record(file string, data string) {
-	os.write_file(file, data) or { eprintln('unable to write file "$file"\n$err') }
+	os.write_file(file, data) or {
+		plu.fail(err)
+		return
+	}
 }
