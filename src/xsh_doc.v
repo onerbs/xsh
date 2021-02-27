@@ -7,7 +7,9 @@ module main
 import doc
 import plu { fail }
 
+//
 // Usage: xsh_doc <lib> [<fun>]
+//
 
 fn main() {
 	args := plu.need_args(1) or { exit(fail(err)) }

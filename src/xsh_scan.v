@@ -7,7 +7,15 @@ module main
 import doc
 import plu { fail }
 
-// Usage: xsh_scan list [-m]
+//
+// Usage: xsh_scan <command>
+//
+// Commands:
+//   list [<options>]
+//
+//     Options:
+//       -m    Enable the minimal mode
+//
 
 fn main() {
 	mut args := plu.need_args(1) or { exit(fail(err)) }

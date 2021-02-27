@@ -7,7 +7,13 @@ module main
 import xsh
 import plu { fail }
 
-// Usage: xsh_watch [-d|--del] [<path>] [-q|--quiet]
+//
+// Usage: xsh_watch [<options>] [<entries>]
+//
+// Options:
+//   -d, --del      Enable the delete mode
+//   -q, --quiet    Enable the quiet mode
+//
 
 fn main() {
 	mut state := xsh.get_state() or { exit(fail(err)) }
