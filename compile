@@ -12,9 +12,10 @@ if [[ $0 == $BASH_SOURCE ]]; then
 fi
 
 command -v v &> /dev/null || {
-  echo "Error: The \`v\` executable was not found."
-  echo "Are you sure you've properly installed V?"
-  echo "https://github.com/vlang/v#installing-v-from-source"
+  echo -e "\e[31mError\e[m: The \`v\` executable was not found"
+  echo
+  echo "  Are you sure you have properly installed V?"
+  echo "  https://github.com/vlang/v#installing-v-from-source"
   echo
   return 1
 }
@@ -46,7 +47,7 @@ xsh::get_plu () {
   if [[ ! -d $Target ]]; then
     echo "Installing module \"plu\" from $GitURL to $Target ..."
     git clone --depth 1 --quiet $GitURL $Target || {
-      echo "Error: failed to clone the \`plu\` repository"
+      echo -e "\e[31mError\e[m: failed to clone the \`plu\` repository"
       echo
       echo "  Please, make sure you have \`git\` installed"
       echo "  and an active Internet connection"
@@ -75,7 +76,7 @@ xsh::compile () {
       continue
     fi
     v $Flag $Source/$Tool.v -o $Output/$Tool 2> $Errors || {
-      echo "Error: failed to compile $Tool.v"
+      echo -e "\e[31mError\e[m: failed to compile $Tool.v"
       echo
       echo "  Please, open an issue and share the logs"
       echo "  log file: $Errors"
