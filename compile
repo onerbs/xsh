@@ -27,7 +27,6 @@ fi
 case $1 in
   clean )
     rm -rf $XSH_HOME/bin &> /dev/null
-    rm $XSH_HOME/*.log &> /dev/null
     shift
     ;;
 esac
@@ -75,7 +74,7 @@ xsh::compile () {
       # Avoid wasting resources, skip re-compiling.
       continue
     fi
-    v $Flag $Source/$Tool.v -o $Output/$Tool 2> $Errors || {
+    v $Flag $Source/$Tool.v -o $Output/$Tool &> $Errors || {
       echo -e "\e[31mError\e[m: failed to compile $Tool.v"
       echo
       echo "  Please, open an issue and share the logs"
