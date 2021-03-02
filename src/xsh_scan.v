@@ -18,7 +18,7 @@ import plu { fail }
 //
 
 fn main() {
-	mut args := plu.need_args(1) or { exit(fail(err)) }
+	mut args := plu.need_args(1) or { exit(fail(err.msg)) }
 	cmd_name := args[0]
 	match cmd_name {
 		'list' { cmd_list(mut args[1..]) }
@@ -30,7 +30,7 @@ fn main() {
 fn cmd_list(mut args []string) {
 	minimal := plu.parse_flag(mut args, ['-m'])
 
-	shelve := doc.get_shelve() or { exit(fail(err)) }
+	shelve := doc.get_shelve() or { exit(fail(err.msg)) }
 	mut result := []string{}
 
 	for book in shelve {

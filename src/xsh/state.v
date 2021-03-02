@@ -48,7 +48,7 @@ fn create_state(xsh_home string, origin string) string {
 
 fn record(file string, data string) {
 	os.write_file(file, data) or {
-		plu.fail(err)
+		plu.fail(err.msg)
 		return
 	}
 }

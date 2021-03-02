@@ -16,7 +16,7 @@ import plu { fail }
 //
 
 fn main() {
-	mut state := xsh.get_state() or { exit(fail(err)) }
+	mut state := xsh.get_state() or { exit(fail(err.msg)) }
 	mut path := state.get_path()
 	mut args := plu.get_args()
 

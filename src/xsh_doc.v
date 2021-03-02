@@ -12,12 +12,12 @@ import plu { fail }
 //
 
 fn main() {
-	args := plu.need_args(1) or { exit(fail(err)) }
+	args := plu.need_args(1) or { exit(fail(err.msg)) }
 
 	lib_name := args.first()
 	fun_name := if args.len > 1 { args[1] } else { '' }
 
-	sheets := doc.get_sheets_by_name(lib_name) or { exit(fail(err)) }
+	sheets := doc.get_sheets_by_name(lib_name) or { exit(fail(err.msg)) }
 
 	if fun_name.len > 0 {
 		for s in sheets {
