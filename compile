@@ -4,7 +4,7 @@
 # This file is subject to the terms and conditions defined in
 # the LICENSE file, which is part of this source code package.
 
-# Usage: . $XSH_HOME/compile [clean] [-prod]
+# Usage: . $XSH_HOME/compile [clean] [<flags>]
 
 if [[ $0 == $BASH_SOURCE ]]; then
   echo "Do not run this file, source it instead." >&2
@@ -57,24 +57,25 @@ xsh::get_plu () {
 }
 
 xsh::compile () {
-  local Tool Flag
+  local Tool Flag Flags
   local Source=$XSH_HOME/src
   local Output=$XSH_HOME/bin
   local Errors=$XSH_HOME/$(date '+%y%m%d').log
 
-  case $1 in
-    -prod )
-      Flag=$1
+  for Flag in $@; do
+    case $Flag in -* )
+      Flags+=($Flag)
       shift
       ;;
-  esac
+    esac
+  done
 
   for Tool in $@; do
     if [[ -x $Output/$Tool ]]; then
       # Avoid wasting resources, skip re-compiling.
       continue
     fi
-    v $Flag $Source/$Tool.v -o $Output/$Tool &> $Errors || {
+    v ${Flags[@]} $Source/$Tool.v -o $Output/$Tool &> $Errors || {
       echo -e "\e[31mError\e[m: failed to compile $Tool.v"
       echo
       echo "  Please, open an issue and share the logs"
@@ -91,6 +92,6 @@ xsh::compile () {
 }
 
 xsh::get_plu || return
-xsh::compile $1 xsh_{watch,doc,scan} || return
+xsh::compile $@ xsh_{watch,doc,scan} || return
 
 unset -f xsh::compile xsh::get_plu
