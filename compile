@@ -19,7 +19,7 @@ command -v v &> /dev/null || {
   return 1
 }
 
-if [[ ! $XSH_HOME ]]; then
+if [ ! $XSH_HOME ]; then
   export XSH_HOME=$(dirname $BASH_SOURCE)
 fi
 
