@@ -2,18 +2,29 @@
 // This file is subject to the terms and conditions defined in
 // the LICENSE file, which is part of this source code package.
 
-module main
+module doc
 
-import doc
+import os
+
+const (
+	base  = 'file'
+	items = [
+		base,
+		'${base}.one',
+		'${base}.one.two',
+		'${base}.one.two.three',
+	]
+)
 
 fn test_simple_path() {
-	assert doc.simple_path('/path/to/file') == 'file'
-	assert doc.simple_path('/path/to/file.c') == 'file'
-	assert doc.simple_path('/path/to/file.c.v') == 'file.c'
+	prefix := os.getwd()
+	for item in doc.items {
+		assert simple_path(os.join_path(prefix, item)) == doc.base
+	}
 }
 
 fn test_simple() {
-	assert doc.simple('file') == 'file'
-	assert doc.simple('file.c') == 'file'
-	assert doc.simple('file.c.v') == 'file.c'
+	for item in doc.items {
+		assert simple(item) == doc.base
+	}
 }
