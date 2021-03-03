@@ -10,18 +10,18 @@ struct Book {
 pub:
 	origin string
 	name   string
-	books  []string
-	sheets []string
+	shelve []Book
+	sheets []Sheet
 }
 
 pub fn book(root string) Book {
-	mut books := []string{}
-	mut sheets := []string{}
+	mut shelve := []Book{}
+	mut sheets := []Sheet{}
 	for file in get_files(root) {
 		if os.is_dir(file) {
-			books << file
+			shelve << book(file)
 		} else {
-			sheets << file
+			sheets << sheet(file)
 		}
 	}
 	return Book{
