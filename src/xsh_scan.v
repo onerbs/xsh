@@ -35,8 +35,8 @@ fn cmd_list(mut args []string) {
 
 	for book in shelve {
 		if minimal {
-			result << book.books.map(doc.simple_path)
-			result << book.sheets.map(doc.simple_path)
+			result << book.shelve.map(it.name)
+			result << book.sheets.map(it.name)
 		} else {
 			plu.set_title(book.origin)
 		}
