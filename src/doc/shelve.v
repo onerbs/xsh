@@ -12,28 +12,14 @@ pub fn get_shelve() ?[]Book {
 }
 
 pub fn (shelve []Book) find_sheets(name string) []Sheet {
-	return shelve.get_sheet_list().filter(simple_path(it) == name).map(sheet)
+	return shelve.get_sheets().filter(it.name == name)
 }
 
-fn (shelve []Book) get_sheet_list() []string {
-	return flat(shelve.map(it.sheets))
-}
-
-// Someday, this will be easier...
-fn flat<T>(xs [][]T) []T {
-	mut unit := []T{cap: count<T>(xs)}
-	for arr in xs {
-		for e in arr {
-			unit << e
-		}
+fn (shelve []Book) get_sheets() []Sheet {
+	mut sheets := []Sheet{}
+	for book in shelve {
+		sheets << book.sheets
+		sheets << book.shelve.get_sheets()
 	}
-	return unit
-}
-
-fn count<T>(xs [][]T) int {
-	return xs.map(it.len).reduce(sum, 0)
-}
-
-fn sum(a int, b int) int {
-	return a + b
+	return sheets
 }
