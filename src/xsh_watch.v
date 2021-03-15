@@ -51,9 +51,9 @@ fn extract(raw []string) ([]string, []string) {
 			continue
 		}
 		if status {
-			to_add << plu.real_path(it)
+			to_add << plu.abs_path(it)
 		} else {
-			to_del << plu.real_path(it)
+			to_del << plu.abs_path(it)
 		}
 	}
 	return to_add, to_del
