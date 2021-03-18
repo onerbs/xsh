@@ -52,11 +52,6 @@ pub fn (self Sheet) str() string {
 	return result
 }
 
-pub fn get_sheets_by_name(name string) ?[]Sheet {
-	shelve := get_shelve() ?
-	return shelve.find_sheets(name)
-}
-
 // The supported forms are:
 // - *bold*
 // - _italic_

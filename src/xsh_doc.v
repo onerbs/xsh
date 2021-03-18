@@ -14,7 +14,8 @@ import plu { fail }
 fn main() {
 	args := plu.need_args(1) or { exit(fail(err.msg)) }
 	name := if args.len > 1 { args[1] } else { '' }
-	mut sheets := doc.get_sheets_by_name(args[0])
+	shelve := doc.get_shelve() or { exit(fail(err.msg)) }
+	mut sheets := shelve.peek(args[0])
 	for mut sheet in sheets {
 		println(sheet.parse().peek(name))
 	}

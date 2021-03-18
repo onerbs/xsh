@@ -11,7 +11,7 @@ pub fn get_shelve() ?[]Book {
 	return state.get_path().map(book)
 }
 
-pub fn (shelve []Book) find_sheets(name string) []Sheet {
+pub fn (shelve []Book) peek(name string) []Sheet {
 	return shelve.get_sheets().filter(it.name == name)
 }
 
