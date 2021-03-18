@@ -62,7 +62,24 @@ pub fn (mut self Sheet) parse() Sheet {
 			}
 		}
 	}
+	as_names := self.aliases.map(it.name)
+	for mut alias in self.aliases {
+		key := alias.alias.split_nth(' ', 2)[0]
+		if key in as_names {
+			expanded := self.aliases.expand(key)
+			alias.alias = alias.alias.replace_once(key, expanded)
+		}
+	}
 	return self
+}
+
+fn (self []Alias) expand(name string) string {
+	for x in self {
+		if x.name == name {
+			return x.alias
+		}
+	}
+	return ''
 }
 
 // clean_file clean the lines of the specified file

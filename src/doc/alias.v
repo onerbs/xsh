@@ -7,7 +7,7 @@ module doc
 import term
 
 pub struct Alias {
-pub:
+pub mut:
 	name string
 mut:
 	headline string
