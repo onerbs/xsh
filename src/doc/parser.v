@@ -6,45 +6,63 @@ module doc
 
 import os
 
-pub fn (s Sheet) get_entes() []Ente {
-	mut entes := []Ente{}
-	mut current := Ente{}
-	mut ongoing := false
-	lines := clean_file(s.origin)
-	for line in lines {
-		if ' () {' in line {
-			current = ente(line.split(' ')[0])
-			ongoing = true
-		}
-		if line == '}' {
-			if ongoing {
-				entes << current
-				current = &Ente{}
-				ongoing = false
+pub fn (mut self Sheet) parse() Sheet {
+	mut tmp_fn := Function{}
+	mut tmp_as := Alias{}
+	mut iside_function := false
+	for line in clean_file(self.origin) {
+		if line.starts_with('alias') {
+			parts := line.split_nth('=', 2)
+			name := parts[0].split_nth(' ', 2)[1]
+			alias := parts[1][1..parts[1].len - 1]
+			self.aliases << Alias{
+				name: name
+				headline: tmp_as.headline
+				alias: alias
+				usage: tmp_as.usage
+				notes: tmp_as.notes
+			}
+			tmp_as = Alias{}
+		} else if line.ends_with(' () {') {
+			tmp_fn = new_function(line.split_nth(' ', 2)[0])
+			iside_function = true
+		} else if line == '}' {
+			if iside_function {
+				self.functions << tmp_fn
+				iside_function = false
 			}
 		} else if line.starts_with('#! ') {
-			if ongoing {
-				current.headline = ' — ${line[3..]}'
+			headline := line[3..]
+			if iside_function {
+				tmp_fn.headline = headline
+			} else {
+				tmp_as.headline = headline
 			}
 		} else if line.starts_with('#+ ') {
-			if ongoing {
-				current.usage = line[3..]
+			usage := line[3..]
+			if iside_function {
+				tmp_fn.usage = usage
+			} else {
+				tmp_as.usage = usage
 			}
 		} else if line.starts_with('#-') {
-			if ongoing {
-				current.notes << if line.len > 2 { format(line[3..]) } else { '' }
+			notes := if line.len > 2 { format(line[3..]) } else { '' }
+			if iside_function {
+				tmp_fn.notes << notes
+			} else {
+				tmp_as.notes << notes
 			}
 		} else if line.starts_with('#: ') {
-			if ongoing {
-				current.demos << demo(current.name, line[3..])
+			if iside_function {
+				tmp_fn.demos << demo(tmp_fn.name, line[3..])
 			}
 		} else if ' ) # ' in line {
-			if ongoing {
-				current.flags << flag(line)
+			if iside_function {
+				tmp_fn.flags << flag(line)
 			}
 		}
 	}
-	return entes
+	return self
 }
 
 // clean_file clean the lines of the specified file

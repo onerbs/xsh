@@ -10,11 +10,46 @@ struct Sheet {
 pub:
 	origin string
 	name   string
+pub mut:
+	functions []Function
+	aliases   []Alias
 }
 
 pub fn sheet(origin string) Sheet {
 	name := simple_path(origin)
-	return Sheet{origin, name}
+	return Sheet{
+		origin: origin
+		name: name
+	}
+}
+
+pub fn (self Sheet) peek(name string) Sheet {
+	if name.len == 0 {
+		return self
+	}
+	return Sheet{
+		origin: self.origin
+		name: self.name
+		functions: self.functions.filter(it.name == name)
+		aliases: self.aliases.filter(it.name == name)
+	}
+}
+
+pub fn (self Sheet) str() string {
+	bright_origin := term.bold(self.origin)
+	mut result := '\n  $bright_origin\n\n'
+	aliases := self.aliases.map('$it').join('\n')
+	functions := self.functions.map('$it').join('\n')
+	if aliases.len > 0 {
+		result += aliases
+		if functions.len > 0 {
+			result += '\n'
+		}
+	}
+	if functions.len > 0 {
+		result += functions
+	}
+	return result
 }
 
 pub fn get_sheets_by_name(name string) ?[]Sheet {

@@ -15,3 +15,10 @@ pub fn simple(file string) string {
 pub fn simple_path(path string) string {
 	return simple(os.base(path))
 }
+
+fn section<T>(title string, xs []T) string {
+	if xs.len == 0 {
+		return ''
+	}
+	return '\n\n  $title:\n' + xs.map('    $it').join('\n')
+}
