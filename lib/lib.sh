@@ -13,12 +13,12 @@ lib () {
       return
       ;;
     -e ) # Edit LIB using $VISUAL or $EDITOR
-      Action=${VISUAL:-$EDITOR}
-      shift
+      lib::edit ${VISUAL:-${EDITOR:-edit}} ${@:2}
+      return
       ;;
     -E ) # EDITOR: Edit LIB using EDITOR
-      Action=$2
-      shift 2
+      lib::edit ${@:2}
+      return
       ;;
     -H ) # LIB [FUNC]: Print help of the specified target
       #: -H base not
@@ -31,6 +31,15 @@ lib () {
       ;;
   esac
   xsh::iter ${Action:-source} $@
+}
+
+lib::edit () {
+  #! Edit a lib using the specified editor
+  #+ EDITOR LIBS
+  #- This will automatically source the edited LIBS
+  (( $# < 2 )) && return
+  xsh::iter $1 ${@:2}
+  xsh::iter  . ${@:2}
 }
 
 need () {
