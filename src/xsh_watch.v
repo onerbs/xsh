@@ -1,81 +1,77 @@
-// Copyright (c) 2021 Alejandro Elí. All rights reserved.
-// This file is subject to the terms and conditions defined in
-// the LICENSE file, which is part of this source code package.
+// Copyright (c) 2021,2024 Alejandro Elí
+// All rights reserved. This file is subject to the terms and conditions
+// defined in the LICENSE file, which is part of this source code package
 
 module main
 
 import kiss
+import os
 import uwu
 import xsh
 
-//
-// Usage: xsh_watch [<options>] [<entries>]
-//
-// Options:
-//   -d, --del      Enable the delete mode
-//   -q, --quiet    Enable the quiet mode
-//
-
-struct Diff {
-mut:
-	add []string
-	del []string
-}
-
-struct Context {
+struct App {
 	args []string
-	quiet bool
+	list bool
 }
 
-fn xsh_watch() !Context {
+fn xsh_watch() !App {
 	mut app := kiss.new(
-		brief: ''
+		brief: 'XSH lib directories'
+		version: '1.2.240127'
+		with_stdin: false
 	)
 
-	q_flag := app.flag(
+	// todo: `--add`, `--del` flags.
+
+	l_flag := app.flag(
 		kind: .bool
-		brief: 'Enable quiet mode'
-		name: 'quiet'
-		alias: `q`
+		brief: 'List the watch path'
+		name: 'list'
+		alias: `l`
 	)
 
 	app.parse()!
 
-	return Context{
+	return App{
 		args: app.get_args()
-		quiet: q_flag.bool()
+		list: l_flag.bool()
 	}
 }
 
 fn play() ! {
+	app := xsh_watch()!
+	dif := app.get_dif()
+
 	mut state := xsh.get_state()!
 	mut path := state.get_path()
 
-	app := xsh_watch()
-	diff := app.get_diff()
-
-	for it in diff.add {
+	for it in dif.add {
 		if it !in path {
 			path << it
 		}
 	}
-	for it in diff.del {
+	for it in dif.del {
 		ix := path.index(it)
 		if ix >= 0 {
 			path.delete(ix)
 		}
 	}
-
 	state.set_path(path)
 
-	if !app.quiet {
-		println('xsh_path:')
-		println(path.map('\t${it}').join_lines())
+	if app.list {
+		println(path.join_lines())
+		return
 	}
 }
 
-fn (app Context) get_diff() Diff {
-	mut diff := Diff{}
+struct Dif {
+mut:
+	add []string
+	del []string
+}
+
+fn (app App) get_dif() Dif {
+	mut dif := Dif{}
 	mut buf := &dif.add
 	for it in app.args {
 		if it in ['-a', '--add'] {
@@ -86,5 +82,11 @@ fn (app Context) get_diff() Diff {
 			buf << os.abs_path(it)
 		}
 	}
-	return diff
+	return dif
+}
+
+fn main() {
+	play() or {
+		uwu.catch(err)
+	}
 }
