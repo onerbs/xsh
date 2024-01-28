@@ -4,8 +4,9 @@
 
 module main
 
+import kiss
+import uwu
 import xsh
-import plu { fail }
 
 //
 // Usage: xsh_watch [<options>] [<entries>]
@@ -15,46 +16,75 @@ import plu { fail }
 //   -q, --quiet    Enable the quiet mode
 //
 
-fn main() {
-	mut state := xsh.get_state() or { exit(fail(err.msg)) }
-	mut path := state.get_path()
-	mut args := plu.get_args()
+struct Diff {
+mut:
+	add []string
+	del []string
+}
 
-	quiet := plu.parse_flag(mut args, ['-q', '--quiet'])
-	to_add, to_del := extract(args)
+struct Context {
+	args []string
+	quiet bool
+}
 
-	if to_add.len > 0 {
-		path << to_add
+fn xsh_watch() !Context {
+	mut app := kiss.new(
+		brief: ''
+	)
+
+	q_flag := app.flag(
+		kind: .bool
+		brief: 'Enable quiet mode'
+		name: 'quiet'
+		alias: `q`
+	)
+
+	app.parse()!
+
+	return Context{
+		args: app.get_args()
+		quiet: q_flag.bool()
 	}
+}
 
-	for it in to_del {
-		if it in path {
-			ix := path.index(it)
+fn play() ! {
+	mut state := xsh.get_state()!
+	mut path := state.get_path()
+
+	app := xsh_watch()
+	diff := app.get_diff()
+
+	for it in diff.add {
+		if it !in path {
+			path << it
+		}
+	}
+	for it in diff.del {
+		ix := path.index(it)
+		if ix >= 0 {
 			path.delete(ix)
 		}
 	}
 
 	state.set_path(path)
 
-	if !quiet {
-		println(path.join('\n'))
+	if !app.quiet {
+		println('xsh_path:')
+		println(path.map('\t${it}').join_lines())
 	}
 }
 
-fn extract(raw []string) ([]string, []string) {
-	mut to_add := []string{}
-	mut to_del := []string{}
-	mut status := true
-	for it in raw {
-		if it in ['-d', '--del'] {
-			status = false
-			continue
-		}
-		if status {
-			to_add << plu.abs_path(it)
+fn (app Context) get_diff() Diff {
+	mut diff := Diff{}
+	mut buf := &dif.add
+	for it in app.args {
+		if it in ['-a', '--add'] {
+			buf = &dif.add
+		} else if it in ['-d', '--del'] {
+			buf = &dif.del
 		} else {
-			to_del << plu.abs_path(it)
+			buf << os.abs_path(it)
 		}
 	}
-	return to_add, to_del
+	return diff
 }

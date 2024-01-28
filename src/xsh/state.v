@@ -1,54 +1,53 @@
-// Copyright (c) 2021 Alejandro Elí. All rights reserved.
+// Copyright (c) 2021,2024 Alejandro Elí. All rights reserved.
 // This file is subject to the terms and conditions defined in
 // the LICENSE file, which is part of this source code package.
 
 module xsh
 
 import os
-import plu
+import uwu
+import uwu.fs
 
-struct State {
+@[noinit]
+pub struct State {
 	origin string
 mut:
 	path []string
 }
 
-pub fn get_state() ?State {
-	xsh_home := plu.need_env('XSH_HOME') ?
-	origin := os.join_path(xsh_home, 'state')
-	raw := os.read_file(origin) or { create_state(xsh_home, origin) }
-	path := raw.split(os.path_delimiter)
-	state := State{
-		origin: origin
-		path: path
-	}
-	return state
-}
+const libdir = os.join_path(xsh.home, 'lib')
+const origin = os.join_path(xsh.home, 'state')
 
-pub fn (s State) get_path() []string {
-	return s.path
-}
-
-pub fn (mut s State) set_path(path []string) {
-	if path != s.path {
-		s.path = path
-		record(s.origin, '$s')
+pub fn get_state() !State {
+	if raw := fs.read_text(xsh.origin) {
+		return State{
+			origin: xsh.origin
+			path: raw.split(os.path_delimiter)
+		}
+	} else {
+		mut state := State{
+			origin: xsh.origin
+		}
+		state.set_path([xsh.libdir])
+		return state
 	}
 }
 
-pub fn (s State) str() string {
-	return s.path.join(os.path_delimiter)
+@[inline]
+pub fn (self State) get_path() []string {
+	return self.path
 }
 
-fn create_state(xsh_home string, origin string) string {
-	default := os.join_path(xsh_home, 'lib')
-	record(origin, default)
-	return default
-}
-
-fn record(file string, data string) {
-	os.write_file(file, data) or {
-		plu.fail(err.msg)
-		return
+@[inline]
+pub fn (mut self State) set_path(path []string) {
+	if path != self.path {
+		self.path = path
+		fs.write_text(self.origin, '${self}') or {
+			log.fail(err.msg())
+		}
 	}
+}
+
+pub fn (self State) str() string {
+	return self.path.join(os.path_delimiter)
 }
